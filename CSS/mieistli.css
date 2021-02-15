@@ -21,7 +21,7 @@ body{
 }
 
 
-#txtCognome,#btnInserisci,#nome, #cognome{
+#txtCognome,#nome, #cognome, #btnVisualizza{
     margin-top: 15px;
 }
 

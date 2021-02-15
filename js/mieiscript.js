@@ -11,8 +11,8 @@ jQuery(function() {
         var flag = false;
 
         //converto tutti i caratteri in minuscolo
-        name.toLowerCase();
-        surname.toLowerCase();
+        name = name.toLowerCase();
+        surname = surname.toLowerCase();
 
         //calcolo la lunghezza della stringhe nome e cognome
         var lenghtName = name.length;
@@ -28,20 +28,41 @@ jQuery(function() {
             flag = true;
         }
 
-        var codeName = name.charCodeAt(); //calcolo il codice ASCII del nome e del cognome
-        var codeSurname  = surname.charCodeAt();
+        var flag2 = false;
+        var charName = name.split(""); //trasfomrmo le stringhe contenenti nome e cognome in un vettore di char
+        var charSurname = surname.split("");
 
-        if((codeName < 97 || codeName > 122) || (codeSurname < 97 || codeSurname > 122)) // e verifico che sia compreso tra i caratteri dell'alfabeto
+        for(var j = 0; j < charName.length; j++)
+        {
+            var tmp = charName[j].charCodeAt(); //e tramite l'utilizzo del codice ASCII controllo che ogni carattere sia compreso nell'alfabeto
+
+            if(tmp < 97 || tmp > 122)
+            {
+                flag2 = true;
+            }
+        }
+
+        for(var j = 0; j < charSurname.length; j++)
+        {
+            var tmp = charSurname[j].charCodeAt();
+
+            if(tmp < 97 || tmp > 122)
+            {
+                flag2 = true;
+            }
+        }
+
+        if(flag2)
         {
             jQuery("#Title").html("Attento!");
             jQuery("#paragraph").html("I caratteri di nome e cognome devono essere caratteri dell'alfabeto.");
             jQuery("#btnSecond").html("Ok");
             jQuery("#btnFirst").html("Ok");
             jQuery("#triggerModal").click();
-            flag = true;
         }
 
-        if(!flag) //in caso i dati vadano bene posso procedere con il resto delle operazioni
+
+        if(!flag && !flag2) //in caso i dati vadano bene posso procedere con il resto delle operazioni
         {
             var firstLetter = name.charAt(0);
             var firstLetterCode = firstLetter.charCodeAt(); 
@@ -59,12 +80,26 @@ jQuery(function() {
                 cognome: surname
             } 
 
-            alert(names[i]);
-
             i++;
         }
-
     });
+
+    //funzione che mostra un modale con all'interno tutti i nominativi inseriti
+    jQuery("#btnVisualizza").on("click", function() {
+        for(var j = 0; j < i; j++)
+        {
+            var blocco = jQuery("<li>" + names[j].nome + " " + names[j].cognome + "</li>");
+            blocco.addClass("list-group-item");
+            jQuery("#listNames").append(blocco);
+        }
+
+        jQuery("#triggerList").click();
+    });
+
+    jQuery("#btnClose").on("click", function (){
+            jQuery(".list-group-item").remove(); //una volta chiuso il modale rimuovi i componenti all'interno della lista
+    });
+
 });
         
 
